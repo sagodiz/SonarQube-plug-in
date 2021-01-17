@@ -23,22 +23,33 @@ jobs:
       matrix:
         # subversions might be added
         java: [8, 9, 10, 11]
+        
+    name: Build SonarQube plug-in with JDK ${{ matrix.java }}
+    
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      # Install the Java JDK with the specific Java version
       - name: Setup Java JDK version ${{ matrix.java }}
         uses: actions/setup-java@v1.4.3
         with:
           java-version: ${{ matrix.java }}
           
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      # Install Pandoc dependency so build script does not fail
+      - name: Installing Pandoc dependency
+        run: |
+          wget https://github.com/jgm/pandoc/releases/download/2.2.3.2/pandoc-2.2.3.2-linux.tar.gz -O /tmp/pandoc.tar.gz
+          tar -xzf /tmp/pandoc.tar.gz
+          export PATH="$PWD/pandoc-2.2.3.2/bin:$PATH"
+          
+      # Checks-out repository under $GITHUB_WORKSPACE, so the job can access it
       - name: Checking out repository
         uses: actions/checkout@v2
 
-      # Runs a single command using the runners shell
+      # Runs the build script
       - name: Run the build python script
         run: python3 tools/build.py --dist
 
-      # Runs a set of commands using the runners shell
+      # Runs the testing script
       - name: Run regression tests
         run: python3 tools/run-test.py --init --print-log -sv 7.9.3 -scv 4.2.0.1873
         
