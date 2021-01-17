@@ -75,6 +75,10 @@ jobs:
     
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      # Checks-out repository under $GITHUB_WORKSPACE, so the job can access it
+      - name: Checking out repository
+        uses: actions/checkout@v2
+        
       # Runs the testing script
       - name: Run regression tests
         run: python3 tools/run-test.py --init --print-log -sv 7.9.3 -scv 4.2.0.1873
