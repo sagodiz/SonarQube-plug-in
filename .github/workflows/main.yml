@@ -43,9 +43,7 @@ jobs:
           # sharing variable among steps as every step runs in different shell.
           echo "PATH=$PATH" >> $GITHUB_ENV
           echo "PWD: $PWD"
-          ls -l
-          ls pandoc*
-          pandoc -h
+          ls -lx00
           
       # Checks-out repository under $GITHUB_WORKSPACE, so the job can access it
       - name: Checking out repository
@@ -54,6 +52,7 @@ jobs:
       # Runs the build script
       - name: Run the build python script
         run: |
+          echo "PWD: $PWD"
           echo "$PATH"
           ls -l
           ls -R pandoc*
