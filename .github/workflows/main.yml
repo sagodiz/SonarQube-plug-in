@@ -38,15 +38,6 @@ jobs:
         uses: actions/setup-java@v1.4.3
         with:
           java-version: ${{ matrix.java }}
-          
-      # Install Pandoc dependency so build script does not fail
-      - name: Installing Pandoc dependency
-        run: |
-          wget https://github.com/jgm/pandoc/releases/download/2.2.3.2/pandoc-2.2.3.2-linux.tar.gz -O /tmp/pandoc.tar.gz
-          tar -xzf /tmp/pandoc.tar.gz
-          export PATH="$PWD/pandoc-2.2.3.2/bin:$PATH"
-          # sharing variable among steps as every step runs in different shell.
-          echo "PATH=$PATH" >> $GITHUB_ENV
 
       # Runs the build script
       - name: Run the build python script
@@ -75,10 +66,25 @@ jobs:
     
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      # Install the Java JDK with the specific Java version
+      - name: Setup Java JDK version ${{ matrix.java }}
+        uses: actions/setup-java@v1.4.3
+        with:
+          java-version: ${{ matrix.java }}
+          
       # Checks-out repository under $GITHUB_WORKSPACE, so the job can access it
       - name: Checking out repository
         uses: actions/checkout@v2
-        
+      
+      # Install Pandoc dependency so build script does not fail
+      - name: Installing Pandoc dependency
+        run: |
+          wget https://github.com/jgm/pandoc/releases/download/2.2.3.2/pandoc-2.2.3.2-linux.tar.gz -O /tmp/pandoc.tar.gz
+          tar -xzf /tmp/pandoc.tar.gz
+          export PATH="$PWD/pandoc-2.2.3.2/bin:$PATH"
+          # sharing variable among steps as every step runs in different shell.
+          echo "PATH=$PATH" >> $GITHUB_ENV
+          
       # Runs the testing script
       - name: Run regression tests
         run: python3 tools/run-test.py --init --print-log -sv 7.9.3 -scv 4.2.0.1873
