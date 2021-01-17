@@ -52,6 +52,8 @@ jobs:
       # Runs the build script
       - name: Run the build python script
         run: |
+          echo "$PATH"
+          $PWD/pandoc-2.2.3.2/bin/pandoc -h
           pandoc -h
           python3 tools/build.py --dist
 
