@@ -49,7 +49,9 @@ jobs:
 
       # Runs the build script
       - name: Run the build python script
-        run: python3 tools/build.py --dist
+        run: |
+          pandoc -h
+          python3 tools/build.py --dist
 
       # Runs the testing script
       - name: Run regression tests
