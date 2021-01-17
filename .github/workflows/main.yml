@@ -21,8 +21,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        # subversions might be added
-        java: [8, 9, 10, 11]
+        # subversions and other java versions might be added
+        java: [11]
         
     name: Build SonarQube plug-in with JDK ${{ matrix.java }}
     
@@ -47,24 +47,10 @@ jobs:
           export PATH="$PWD/pandoc-2.2.3.2/bin:$PATH"
           # sharing variable among steps as every step runs in different shell.
           echo "PATH=$PATH" >> $GITHUB_ENV
-          echo "PWD: $PWD"
-          ls -l
 
       # Runs the build script
       - name: Run the build python script
-        run: |
-          echo "PWD: $PWD"
-          echo "$PATH"
-          ls -l
-          ls -R pandoc*
-          echo "Step 1"
-          ./pandoc-2.2.3.2/bin/pandoc -h
-          echo "Step 2"
-          $PWD/pandoc-2.2.3.2/bin/pandoc -h
-          echo "Step 3"
-          pandoc -h
-          echo "Step 4"
-          python3 tools/build.py --dist
+        run: python3 tools/build.py --dist
 
       # Runs the testing script
       - name: Run regression tests
