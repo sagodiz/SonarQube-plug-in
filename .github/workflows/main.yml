@@ -43,7 +43,7 @@ jobs:
           # sharing variable among steps as every step runs in different shell.
           echo "PATH=$PATH" >> $GITHUB_ENV
           echo "PWD: $PWD"
-          ls -lx00
+          ls -l
           
       # Checks-out repository under $GITHUB_WORKSPACE, so the job can access it
       - name: Checking out repository
