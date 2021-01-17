@@ -39,6 +39,15 @@ jobs:
         with:
           java-version: ${{ matrix.java }}
 
+      # Install Pandoc dependency so build script does not fail
+      - name: Installing Pandoc dependency
+        run: |
+          wget https://github.com/jgm/pandoc/releases/download/2.2.3.2/pandoc-2.2.3.2-linux.tar.gz -O /tmp/pandoc.tar.gz
+          tar -xzf /tmp/pandoc.tar.gz
+          export PATH="$PWD/pandoc-2.2.3.2/bin:$PATH"
+          # sharing variable among steps as every step runs in different shell.
+          echo "PATH=$PATH" >> $GITHUB_ENV
+
       # Runs the build script
       - name: Run the build python script
         run: python3 tools/build.py --dist
