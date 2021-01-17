@@ -40,6 +40,8 @@ jobs:
           wget https://github.com/jgm/pandoc/releases/download/2.2.3.2/pandoc-2.2.3.2-linux.tar.gz -O /tmp/pandoc.tar.gz
           tar -xzf /tmp/pandoc.tar.gz
           export PATH="$PWD/pandoc-2.2.3.2/bin:$PATH"
+          # sharing variable among steps as every step runs in different shell.
+          echo "PATH=$PATH" >> $GITHUB_ENV
           
       # Checks-out repository under $GITHUB_WORKSPACE, so the job can access it
       - name: Checking out repository
