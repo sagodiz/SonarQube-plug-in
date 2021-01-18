@@ -123,18 +123,13 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: build_directory
-        
-      - name: Extracting build directory
-        run: |
-          echo "PWD $PWD"
-          ls -l
-        
+
       - name: Running code analyzis
         run: |
-          echo 'TODO checking out a directory with sample code and running code analyzis on that'
+          python3 tools/demo_run.py
         
       - name: Checking API results
         run: |
-          echo "Getting JSON from web API and check its value"
+          python3 tools/web_api_test.py
 
     
