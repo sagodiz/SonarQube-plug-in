@@ -51,17 +51,6 @@ jobs:
       # Runs the build script
       - name: Run the build python script
         run: python3 tools/build.py --dist
-        
-      - name: Saving plug-in JAR files
-        uses: actions/upload-artifact@v2.2.2
-        with:
-          name: build_directory
-          # sourcemeter-9.1-plugins-for-sonarqube-7.9-v2.0.1
-          path: |
-            build
-            !build/**/*.md
-            !build/**/*.html
-            !build/**/*.tar.gz
 
   test:
     # The type of runner that the job will run on
@@ -98,8 +87,19 @@ jobs:
       - name: Run regression tests
         run: python3 tools/run-test.py --init --print-log -sv 7.9.3 -scv 4.2.0.1873
         
+      - name: Saving plug-in JAR files
+        uses: actions/upload-artifact@v2.2.2
+        with:
+          name: build_directory
+          # sourcemeter-9.1-plugins-for-sonarqube-7.9-v2.0.1
+          path: |
+            build
+            !build/**/*.md
+            !build/**/*.html
+            !build/**/*.tar.gz
+        
   test_web_api:
-    needs: [build]
+    needs: [test]
     name: Testing SM metrics via web API
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
@@ -126,6 +126,7 @@ jobs:
 
       - name: Running code analyzis
         run: |
+          ls -R
           python3 tools/demo_run.py
         
       - name: Checking API results
