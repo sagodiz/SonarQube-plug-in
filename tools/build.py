@@ -94,12 +94,9 @@ def mvn_install(target):
     common.run_cmd('mvn', ['-f', ('src/%s/pom.xml' % target), 'clean', 'install'])
 
 def usersguide():
-    if platform.system() == 'Windows':
-        common.run_cmd('py', ['-3', 'generatedoc.py', '-css', 'style\\SourceMeter.css', '-html'],
-                False, 'doc/usersguide')
-    else:
-        common.run_cmd('python3', ['generatedoc.py', '-css', 'style/SourceMeter.css', '-html'],
-                False, 'doc/usersguide')
+
+    common.run_cmd('python3', ['generatedoc.py', '-css', 'style/SourceMeter.css', '-html'],
+            False, 'doc/usersguide')
     try:
         shutil.copy('doc/usersguide/results/UG.html', 'doc/UG.html')
         shutil.copy('doc/UG.html', 'src/sonarqube-gui-plugin/src/main/resources/static/help/usersguide.html')
